@@ -414,3 +414,51 @@ form {
 .badge.toprated {
   background: #10b981;
 }
+
+/* ===== HAMBURGER MENU ===== */
+
+.menu-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+@media (min-width: 769px) {
+  .menu-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    position: absolute;
+    top: 70px;
+    right: 15px;
+
+    background: var(--card);
+    border: 1px solid var(--border);
+
+    padding: 20px;
+    border-radius: 12px;
+
+    box-shadow: var(--shadow);
+
+    z-index: 9999;
+  }
+
+  .navbar {
+    position: relative;
+  }
+}

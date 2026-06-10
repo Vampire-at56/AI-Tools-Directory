@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import { supabase } from "../lib/supabase";
 import SearchTools from "../components/SearchTools";
 import ToolCard from "../components/ToolCard";
@@ -18,9 +17,6 @@ export default async function Home() {
 
   const featuredTools =
     tools?.filter((tool) => tool.featured) || [];
-
-  const normalTools =
-    tools?.filter((tool) => !tool.featured) || [];
 
   const topRatedTools = tools
     ?.map((tool) => {
@@ -53,8 +49,6 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar />
-
       <div className="hero">
         <h1>🚀 Discover Best AI Tools</h1>
 
@@ -73,7 +67,7 @@ export default async function Home() {
           }}
         >
           <a
-            href="#all-tools"
+            href="#search-tools"
             className="view-btn"
             style={{
               background: "white",
@@ -84,10 +78,7 @@ export default async function Home() {
             🚀 Explore Tools
           </a>
 
-          <a
-            href="/submit-tool"
-            className="view-btn"
-          >
+          <a href="/submit-tool" className="view-btn">
             ➕ Submit Your Tool
           </a>
         </div>
@@ -116,6 +107,16 @@ export default async function Home() {
       </div>
 
       <div className="container">
+        {/* SEARCH SECTION MOVED TO TOP */}
+        <h2
+          id="search-tools"
+          className="section-title"
+        >
+          🔍 Search AI Tools
+        </h2>
+
+        <SearchTools tools={tools || []} />
+
         <h2 className="section-title">
           ⭐ Featured Tools
         </h2>
@@ -161,15 +162,6 @@ export default async function Home() {
             <ToolCard key={tool.id} tool={tool} />
           ))}
         </div>
-
-        <h2
-          id="all-tools"
-          className="section-title"
-        >
-          🤖 All AI Tools
-        </h2>
-
-        <SearchTools tools={normalTools} />
 
         <div
           style={{

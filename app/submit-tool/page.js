@@ -1,9 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function SubmitToolPage() {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
+
   const [name, setName] = useState("");
   const [description, setDescription] =
     useState("");
@@ -14,17 +19,30 @@ export default function SubmitToolPage() {
   const [logoUrl, setLogoUrl] =
     useState("");
 
-  const submitTool = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    checkUser();
+  }, []);
 
+  const checkUser = async () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
     if (!user) {
       alert("Please login first");
+      router.push("/login");
       return;
     }
+
+    setLoading(false);
+  };
+
+  const submitTool = async (e) => {
+    e.preventDefault();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const { error } = await supabase
       .from("tool_submissions")
@@ -55,6 +73,10 @@ export default function SubmitToolPage() {
     setLogoUrl("");
   };
 
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
+
   return (
     <div className="container">
       <h1>Submit AI Tool</h1>
@@ -68,8 +90,6 @@ export default function SubmitToolPage() {
           }
         />
 
-        <br /><br />
-
         <textarea
           placeholder="Description"
           value={description}
@@ -77,8 +97,6 @@ export default function SubmitToolPage() {
             setDescription(e.target.value)
           }
         />
-
-        <br /><br />
 
         <input
           placeholder="Category"
@@ -88,8 +106,6 @@ export default function SubmitToolPage() {
           }
         />
 
-        <br /><br />
-
         <input
           placeholder="Website URL"
           value={websiteUrl}
@@ -98,8 +114,6 @@ export default function SubmitToolPage() {
           }
         />
 
-        <br /><br />
-
         <input
           placeholder="Logo URL"
           value={logoUrl}
@@ -107,8 +121,6 @@ export default function SubmitToolPage() {
             setLogoUrl(e.target.value)
           }
         />
-
-        <br /><br />
 
         <button type="submit">
           Submit Tool

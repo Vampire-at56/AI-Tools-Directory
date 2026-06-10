@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 export default function FavoriteButton({ toolId }) {
+  const router = useRouter();
+
   const [user, setUser] = useState(null);
   const [saved, setSaved] = useState(false);
 
@@ -35,15 +38,21 @@ export default function FavoriteButton({ toolId }) {
   const toggleFavorite = async () => {
     if (!user) {
       alert("Please login first");
+      router.push("/login");
       return;
     }
 
     if (saved) {
-      await supabase
+      const { error } = await supabase
         .from("favorites")
         .delete()
         .eq("user_id", user.id)
         .eq("tool_id", toolId);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
 
       setSaved(false);
     } else {

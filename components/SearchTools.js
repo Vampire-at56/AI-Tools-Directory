@@ -19,34 +19,36 @@ export default function SearchTools({ tools }) {
   });
 
   return (
-    <>
-  <input
-    className="search-box"
-    type="text"
-    placeholder="Search AI Tools..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-  />
+    <div className="search-section">
+      <div className="search-filter-row">
+        <input
+          className="search-box"
+          type="text"
+          placeholder="Search AI Tools..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-  <select
-    className="category-select"
-    value={category}
-    onChange={(e) => setCategory(e.target.value)}
-  >
-    <option value="">All Categories</option>
-    <option value="Chatbot">Chatbot</option>
-    <option value="Image">Image</option>
-    <option value="Video">Video</option>
-  </select>
+        <select
+          className="category-select"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">All Categories</option>
+          <option value="Chatbot">Chatbot</option>
+          <option value="Image">Image</option>
+          <option value="Video">Video</option>
+          <option value="Writing">Writing</option>
+          <option value="Coding">Coding</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+      </div>
 
-  <div className="tools-grid">
-    {filteredTools.map((tool) => (
-      <ToolCard
-        key={tool.id}
-        tool={tool}
-      />
-    ))}
-  </div>
-</>
+      <div className="tools-grid">
+        {filteredTools.map((tool) => (
+          <ToolCard key={tool.id} tool={tool} />
+        ))}
+      </div>
+    </div>
   );
 }
