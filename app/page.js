@@ -2,6 +2,8 @@ import { supabase } from "../lib/supabase";
 import SearchTools from "../components/SearchTools";
 import ToolCard from "../components/ToolCard";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const { data: toolsData, error } = await supabase
     .from("tools")

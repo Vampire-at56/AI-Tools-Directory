@@ -13,10 +13,18 @@ export default function Navbar() {
     setIsAdmin(admin);
   }, []);
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
       <div className="nav-inner">
-        <Link href="/" className="logo-link">
+        <Link
+          href="/"
+          className="logo-link"
+          onClick={closeMenu}
+        >
           <h1 className="logo">🤖 AI Tools Directory</h1>
         </Link>
 
@@ -33,14 +41,18 @@ export default function Navbar() {
         </div>
 
         <div className={menuOpen ? "nav-links open" : "nav-links"}>
-          <Link href="/">Home</Link>
-          <Link href="/leaderboard">Leaderboard</Link>
-          <Link href="/submit-tool">Submit Tool</Link>
-          <Link href="/login">Login</Link>
-          <Link href="/signup">Signup</Link>
-          <Link href="/profile">Profile</Link>
+          <Link href="/" onClick={closeMenu}>Home</Link>
+          <Link href="/leaderboard" onClick={closeMenu}>Leaderboard</Link>
+          <Link href="/submit-tool" onClick={closeMenu}>Submit Tool</Link>
+          <Link href="/login" onClick={closeMenu}>Login</Link>
+          <Link href="/signup" onClick={closeMenu}>Signup</Link>
+          <Link href="/profile" onClick={closeMenu}>Profile</Link>
 
-          {isAdmin && <Link href="/admin">Admin</Link>}
+          {isAdmin && (
+            <Link href="/admin" onClick={closeMenu}>
+              Admin
+            </Link>
+          )}
         </div>
       </div>
     </nav>

@@ -2,6 +2,8 @@ import { supabase } from "../../../lib/supabase";
 import ReviewForm from "../../../components/ReviewForm";
 import FavoriteButton from "../../../components/FavoriteButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function ToolPage({ params }) {
   const { id } = await params;
 
