@@ -3,11 +3,12 @@ import SearchTools from "../components/SearchTools";
 import ToolCard from "../components/ToolCard";
 
 export default async function Home() {
-  const { data: tools, error } = await supabase
+  const { data: toolsData, error } = await supabase
     .from("tools")
-    .select("*");
+    .select("*")
+    .order("id", { ascending: false });
 
-  const { data: reviews } = await supabase
+  const { data: reviewsData } = await supabase
     .from("reviews")
     .select("*");
 
@@ -15,13 +16,17 @@ export default async function Home() {
     return <div>Error: {error.message}</div>;
   }
 
-  const featuredTools =
-    tools?.filter((tool) => tool.featured) || [];
+  const allTools = toolsData || [];
+  const reviews = reviewsData || [];
 
-  const topRatedTools = tools
-    ?.map((tool) => {
-      const toolReviews =
-        reviews?.filter((r) => r.tool_id === tool.id) || [];
+  const featuredTools =
+    allTools.filter((tool) => tool.featured);
+
+  const topRatedTools = allTools
+    .map((tool) => {
+      const toolReviews = reviews.filter(
+        (r) => r.tool_id === tool.id
+      );
 
       const avgRating =
         toolReviews.length > 0
@@ -39,12 +44,11 @@ export default async function Home() {
     .sort((a, b) => b.avgRating - a.avgRating)
     .slice(0, 6);
 
-  const trendingTools = [...tools]
+  const trendingTools = [...allTools]
     .sort((a, b) => (b.views || 0) - (a.views || 0))
     .slice(0, 6);
 
-  const newTools = [...tools]
-    .reverse()
+  const newTools = [...allTools]
     .slice(0, 6);
 
   return (
@@ -85,12 +89,12 @@ export default async function Home() {
 
         <div className="stats">
           <div className="stat-card">
-            <h2>{tools?.length || 0}+</h2>
+            <h2>{allTools.length}+</h2>
             <p>AI Tools</p>
           </div>
 
           <div className="stat-card">
-            <h2>{reviews?.length || 0}+</h2>
+            <h2>{reviews.length}+</h2>
             <p>Reviews</p>
           </div>
 
@@ -107,32 +111,32 @@ export default async function Home() {
       </div>
 
       <div className="container">
-        {/* SEARCH SECTION MOVED TO TOP */}
-        <h2
-          id="search-tools"
-          className="section-title"
-        >
+        <h2 id="search-tools" className="section-title">
           🔍 Search AI Tools
         </h2>
 
-        <SearchTools tools={tools || []} />
+        <SearchTools tools={allTools} />
 
         <h2 className="section-title">
           ⭐ Featured Tools
         </h2>
 
-        <div className="tools-grid">
-          {featuredTools.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
-          ))}
-        </div>
+        {featuredTools.length === 0 ? (
+          <p>No featured tools yet.</p>
+        ) : (
+          <div className="tools-grid">
+            {featuredTools.map((tool) => (
+              <ToolCard key={tool.id} tool={tool} />
+            ))}
+          </div>
+        )}
 
         <h2 className="section-title">
           🏆 Top Rated AI Tools
         </h2>
 
         <div className="tools-grid">
-          {topRatedTools?.map((tool) => (
+          {topRatedTools.map((tool) => (
             <ToolCard
               key={tool.id}
               tool={{
@@ -195,9 +199,7 @@ export default async function Home() {
             }}
           />
 
-          <button>
-            Subscribe
-          </button>
+          <button>Subscribe</button>
         </div>
       </div>
     </>
