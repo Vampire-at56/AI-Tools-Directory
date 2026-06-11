@@ -38,18 +38,30 @@ body {
   padding: 30px 20px;
 }
 
-/* ===== Navbar ===== */
+/* ===== FINAL NAVBAR ===== */
 .navbar {
   background: var(--card);
   border-bottom: 1px solid var(--border);
-  padding: 16px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 16px 24px;
   position: sticky;
   top: 0;
   z-index: 999;
   box-shadow: var(--shadow);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 .logo {
@@ -58,20 +70,67 @@ body {
   color: var(--text);
 }
 
-.nav-links {
+.nav-actions {
   display: flex;
-  gap: 18px;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: auto;
 }
 
-.nav-links a {
+.menu-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary) !important;
+  color: white !important;
+  border: none !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+}
+
+.theme-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  font-weight: 700 !important;
+}
+
+.nav-links {
+  display: none !important;
+}
+
+.nav-links.open {
+  display: flex !important;
+  flex-direction: column;
+  gap: 15px;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  z-index: 9999;
+  min-width: 220px;
+}
+
+.nav-links.open a {
   text-decoration: none;
   color: var(--text);
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.nav-links a:hover {
+.nav-links.open a:hover {
   color: var(--primary);
 }
 
@@ -130,6 +189,17 @@ body {
 }
 
 /* ===== Search ===== */
+.search-section {
+  margin-bottom: 50px;
+}
+
+.search-filter-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
 .search-box,
 .category-select,
 input,
@@ -144,6 +214,12 @@ select {
   color: var(--text);
   margin-bottom: 12px;
   outline: none;
+}
+
+.search-filter-row .search-box,
+.search-filter-row .category-select {
+  max-width: none;
+  flex: 1;
 }
 
 textarea {
@@ -179,8 +255,7 @@ select:focus {
 
 .tool-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow:
-    0 20px 45px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 20px 45px rgba(37, 99, 235, 0.15);
 }
 
 .tool-logo {
@@ -218,14 +293,6 @@ body.dark .tool-category {
   color: #c4b5fd;
 }
 
-.featured-badge {
-  background: #f59e0b;
-  color: white;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-}
-
 /* ===== Buttons ===== */
 button,
 .view-btn,
@@ -257,16 +324,6 @@ button:hover,
 
 .btn-add {
   background: #10b981;
-}
-
-.theme-btn {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-.theme-btn:hover {
-  background: var(--bg);
 }
 
 /* ===== Forms / Auth ===== */
@@ -327,45 +384,6 @@ form {
   margin-bottom: 24px;
 }
 
-/* ===== Mobile ===== */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 14px 18px;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .nav-links {
-    justify-content: center;
-    gap: 12px;
-  }
-
-  .hero {
-    margin: 15px;
-    padding: 45px 18px;
-  }
-
-  .hero h1 {
-    font-size: 34px;
-  }
-
-  .hero p {
-    font-size: 15px;
-  }
-
-  .tools-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-title {
-    font-size: 30px;
-  }
-
-  .login-card {
-    width: 92%;
-  }
-}
-
 .analytics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -394,7 +412,6 @@ form {
 }
 
 /* ===== Tool Badges ===== */
-
 .badge {
   font-size: 11px;
   font-weight: 700;
@@ -415,50 +432,48 @@ form {
   background: #10b981;
 }
 
-/* ===== HAMBURGER MENU ===== */
-
-.menu-btn {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-@media (min-width: 769px) {
-  .menu-btn {
-    display: none;
-  }
-}
-
+/* ===== Mobile ===== */
 @media (max-width: 768px) {
-  .nav-links {
-    display: none;
+  .navbar {
+    padding: 14px 16px;
+  }
+
+  .logo {
+    font-size: 18px;
   }
 
   .nav-links.open {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-
-    position: absolute;
-    top: 70px;
-    right: 15px;
-
-    background: var(--card);
-    border: 1px solid var(--border);
-
-    padding: 20px;
-    border-radius: 12px;
-
-    box-shadow: var(--shadow);
-
-    z-index: 9999;
+    top: 58px;
+    right: 0;
+    left: auto;
   }
 
-  .navbar {
-    position: relative;
+  .hero {
+    margin: 15px;
+    padding: 45px 18px;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-filter-row {
+    flex-direction: column;
+  }
+
+  .admin-title {
+    font-size: 30px;
+  }
+
+  .login-card {
+    width: 92%;
   }
 }
