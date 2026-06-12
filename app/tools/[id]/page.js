@@ -69,15 +69,25 @@ export default async function ToolPage({ params }) {
       <p>{reviews?.length || 0} Reviews</p>
 
       <a
-        href={tool.website_url}
+        href={tool.affiliate_url || tool.website_url}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer sponsored"
+        className="view-btn"
       >
-        Visit Website
+        🚀 Visit Tool
       </a>
 
-      <br />
-      <br />
+      <p
+        style={{
+          fontSize: "13px",
+          color: "#777",
+          marginTop: "10px",
+          marginBottom: "20px",
+        }}
+      >
+        Some links on this page may be affiliate links.
+        We may earn a commission at no extra cost to you.
+      </p>
 
       <FavoriteButton toolId={tool.id} />
 

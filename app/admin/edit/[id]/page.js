@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { supabase } from "../../../../lib/supabase";
 import { useRouter } from "next/navigation";
 
 export default function EditPage({ params }) {
-  const { id } = params;
+  const { id } = use(params);
 
   const router = useRouter();
 
@@ -13,8 +13,8 @@ export default function EditPage({ params }) {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
+  const [affiliateUrl, setAffiliateUrl] = useState("");
 
-  // FETCH SINGLE TOOL
   useEffect(() => {
     const fetchTool = async () => {
       const { data, error } = await supabase
@@ -23,18 +23,23 @@ export default function EditPage({ params }) {
         .eq("id", id)
         .single();
 
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
       if (data) {
-        setName(data.name);
-        setDescription(data.description);
-        setCategory(data.category);
-        setWebsiteUrl(data.website_url);
+        setName(data.name || "");
+        setDescription(data.description || "");
+        setCategory(data.category || "");
+        setWebsiteUrl(data.website_url || "");
+        setAffiliateUrl(data.affiliate_url || "");
       }
     };
 
     fetchTool();
   }, [id]);
 
-  // UPDATE TOOL
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -45,6 +50,7 @@ export default function EditPage({ params }) {
         description,
         category,
         website_url: websiteUrl,
+        affiliate_url: affiliateUrl,
       })
       .eq("id", id);
 
@@ -68,7 +74,8 @@ export default function EditPage({ params }) {
           placeholder="Tool Name"
         />
 
-        <br /><br />
+        <br />
+        <br />
 
         <textarea
           value={description}
@@ -76,7 +83,8 @@ export default function EditPage({ params }) {
           placeholder="Description"
         />
 
-        <br /><br />
+        <br />
+        <br />
 
         <input
           value={category}
@@ -84,7 +92,8 @@ export default function EditPage({ params }) {
           placeholder="Category"
         />
 
-        <br /><br />
+        <br />
+        <br />
 
         <input
           value={websiteUrl}
@@ -92,11 +101,19 @@ export default function EditPage({ params }) {
           placeholder="Website URL"
         />
 
-        <br /><br />
+        <br />
+        <br />
 
-        <button type="submit">
-          Update Tool
-        </button>
+        <input
+          value={affiliateUrl}
+          onChange={(e) => setAffiliateUrl(e.target.value)}
+          placeholder="Affiliate URL optional"
+        />
+
+        <br />
+        <br />
+
+        <button type="submit">Update Tool</button>
       </form>
     </div>
   );

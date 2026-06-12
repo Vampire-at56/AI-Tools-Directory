@@ -17,6 +17,7 @@ export default function AdminPage() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
+  const [affiliateUrl, setAffiliateUrl] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [featured, setFeatured] = useState(false);
 
@@ -34,13 +35,8 @@ export default function AdminPage() {
       .select("*")
       .order("id", { ascending: false });
 
-    const { data: reviewsData } = await supabase
-      .from("reviews")
-      .select("*");
-
-    const { data: favoritesData } = await supabase
-      .from("favorites")
-      .select("*");
+    const { data: reviewsData } = await supabase.from("reviews").select("*");
+    const { data: favoritesData } = await supabase.from("favorites").select("*");
 
     const { data: submissionsData } = await supabase
       .from("tool_submissions")
@@ -62,7 +58,7 @@ export default function AdminPage() {
     }
 
     fetchDashboardData();
-  }, []);
+  }, [router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,6 +72,7 @@ export default function AdminPage() {
         description,
         category,
         website_url: websiteUrl,
+        affiliate_url: affiliateUrl,
         logo_url: logoUrl,
         featured,
       },
@@ -91,6 +88,7 @@ export default function AdminPage() {
     setDescription("");
     setCategory("");
     setWebsiteUrl("");
+    setAffiliateUrl("");
     setLogoUrl("");
     setFeatured(false);
 
@@ -100,10 +98,7 @@ export default function AdminPage() {
   };
 
   const handleDelete = async (id) => {
-    const { error } = await supabase
-      .from("tools")
-      .delete()
-      .eq("id", id);
+    const { error } = await supabase.from("tools").delete().eq("id", id);
 
     if (error) {
       alert(error.message);
@@ -118,10 +113,9 @@ export default function AdminPage() {
     0
   );
 
-  const mostViewedTool =
-    [...tools].sort(
-      (a, b) => (b.views || 0) - (a.views || 0)
-    )[0];
+  const mostViewedTool = [...tools].sort(
+    (a, b) => (b.views || 0) - (a.views || 0)
+  )[0];
 
   const mostSavedToolId =
     favorites.length > 0
@@ -139,10 +133,9 @@ export default function AdminPage() {
     (tool) => String(tool.id) === String(mostSavedId)
   );
 
-  const highestRatedTool =
-    [...tools].sort(
-      (a, b) => (b.rating || 0) - (a.rating || 0)
-    )[0];
+  const highestRatedTool = [...tools].sort(
+    (a, b) => (b.rating || 0) - (a.rating || 0)
+  )[0];
 
   return (
     <div className="admin-container">
@@ -248,6 +241,13 @@ export default function AdminPage() {
 
         <input
           type="text"
+          placeholder="Affiliate URL optional"
+          value={affiliateUrl}
+          onChange={(e) => setAffiliateUrl(e.target.value)}
+        />
+
+        <input
+          type="text"
           placeholder="Logo URL"
           value={logoUrl}
           onChange={(e) => setLogoUrl(e.target.value)}
@@ -280,6 +280,10 @@ export default function AdminPage() {
           <p>Slug: {tool.slug || "No slug"}</p>
           <p>👁 {tool.views || 0} Views</p>
 
+          {tool.affiliate_url && (
+            <p style={{ color: "green" }}>Affiliate Link Added ✅</p>
+          )}
+
           <a
             href={`/admin/edit/${tool.id}`}
             className="view-btn"
@@ -288,9 +292,7 @@ export default function AdminPage() {
             Edit
           </a>
 
-          <button onClick={() => handleDelete(tool.id)}>
-            Delete
-          </button>
+          <button onClick={() => handleDelete(tool.id)}>Delete</button>
         </div>
       ))}
     </div>
