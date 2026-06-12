@@ -21,8 +21,9 @@ export default async function Home() {
   const allTools = toolsData || [];
   const reviews = reviewsData || [];
 
-  const featuredTools =
-    allTools.filter((tool) => tool.featured);
+  const searchDefaultTools = allTools.slice(0, 8);
+
+  const featuredTools = allTools.filter((tool) => tool.featured);
 
   const topRatedTools = allTools
     .map((tool) => {
@@ -32,10 +33,8 @@ export default async function Home() {
 
       const avgRating =
         toolReviews.length > 0
-          ? toolReviews.reduce(
-              (sum, r) => sum + r.rating,
-              0
-            ) / toolReviews.length
+          ? toolReviews.reduce((sum, r) => sum + r.rating, 0) /
+            toolReviews.length
           : 0;
 
       return {
@@ -50,8 +49,7 @@ export default async function Home() {
     .sort((a, b) => (b.views || 0) - (a.views || 0))
     .slice(0, 6);
 
-  const newTools = [...allTools]
-    .slice(0, 6);
+  const newTools = [...allTools].slice(0, 6);
 
   return (
     <>
@@ -117,11 +115,9 @@ export default async function Home() {
           🔍 Search AI Tools
         </h2>
 
-        <SearchTools tools={allTools} />
+        <SearchTools tools={searchDefaultTools} allTools={allTools} />
 
-        <h2 className="section-title">
-          ⭐ Featured Tools
-        </h2>
+        <h2 className="section-title">⭐ Featured Tools</h2>
 
         {featuredTools.length === 0 ? (
           <p>No featured tools yet.</p>
@@ -133,9 +129,7 @@ export default async function Home() {
           </div>
         )}
 
-        <h2 className="section-title">
-          🏆 Top Rated AI Tools
-        </h2>
+        <h2 className="section-title">🏆 Top Rated AI Tools</h2>
 
         <div className="tools-grid">
           {topRatedTools.map((tool) => (
@@ -149,9 +143,7 @@ export default async function Home() {
           ))}
         </div>
 
-        <h2 className="section-title">
-          🔥 Trending AI Tools
-        </h2>
+        <h2 className="section-title">🔥 Trending AI Tools</h2>
 
         <div className="tools-grid">
           {trendingTools.map((tool) => (
@@ -159,9 +151,7 @@ export default async function Home() {
           ))}
         </div>
 
-        <h2 className="section-title">
-          ✨ New AI Tools
-        </h2>
+        <h2 className="section-title">✨ New AI Tools</h2>
 
         <div className="tools-grid">
           {newTools.map((tool) => (
