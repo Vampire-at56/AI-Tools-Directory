@@ -1,6 +1,7 @@
 import { supabase } from "../lib/supabase";
 import SearchTools from "../components/SearchTools";
 import ToolCard from "../components/ToolCard";
+import Newsletter from "../components/Newsletter";
 
 export const dynamic = "force-dynamic";
 
@@ -117,6 +118,76 @@ export default async function Home() {
 
         <SearchTools tools={searchDefaultTools} allTools={allTools} />
 
+        <section
+  style={{
+    marginTop: "50px",
+    background: "var(--card)",
+    padding: "40px",
+    borderRadius: "20px",
+    border: "1px solid var(--border)",
+    boxShadow: "var(--shadow)",
+  }}
+>
+  <h2 className="section-title">
+    Why Use Our AI Tools Directory?
+  </h2>
+
+  <p style={{ lineHeight: "1.9", marginTop: "20px" }}>
+    Artificial Intelligence is transforming the way people work,
+    create content, build businesses, write code, design graphics,
+    edit videos, and automate daily tasks. However, with thousands
+    of AI tools being launched every year, finding the right tool
+    for a specific purpose can be difficult and time-consuming.
+    Our AI Tools Directory was created to solve this problem by
+    helping users discover the most useful AI tools in one place.
+  </p>
+
+  <p style={{ lineHeight: "1.9", marginTop: "15px" }}>
+    We carefully organize AI tools into categories such as
+    Chatbots, Writing, Coding, Marketing, Image Generation,
+    Video Creation, Productivity, and many more. Instead of
+    spending hours searching through multiple websites, users
+    can quickly compare tools, read reviews, check ratings,
+    and find solutions that match their needs.
+  </p>
+
+  <p style={{ lineHeight: "1.9", marginTop: "15px" }}>
+    Our platform is designed for everyone, including students,
+    freelancers, developers, content creators, marketers,
+    entrepreneurs, and business owners. Whether you need an AI
+    writing assistant, a coding companion, a design generator,
+    or an automation tool, our directory helps you discover
+    reliable options quickly and efficiently.
+  </p>
+
+  <p style={{ lineHeight: "1.9", marginTop: "15px" }}>
+    One of the biggest advantages of our directory is community
+    feedback. Users can submit reviews and ratings based on
+    their real experiences. This helps visitors understand the
+    strengths and limitations of a tool before investing their
+    time or money. Honest user reviews make it easier to choose
+    the right solution.
+  </p>
+
+  <p style={{ lineHeight: "1.9", marginTop: "15px" }}>
+    We regularly update our database with new and trending AI
+    tools. As the AI industry evolves rapidly, our goal is to
+    ensure that users always have access to the latest tools and
+    innovations. New tools are reviewed and added frequently,
+    allowing visitors to stay informed about emerging AI
+    technologies.
+  </p>
+
+  <p style={{ lineHeight: "1.9", marginTop: "15px" }}>
+    Our mission is simple: make discovering AI tools easy,
+    transparent, and accessible for everyone. By combining
+    powerful search features, organized categories, user
+    reviews, ratings, and curated listings, we aim to become a
+    trusted resource for anyone exploring the world of
+    artificial intelligence.
+  </p>
+</section>
+
         <h2 className="section-title">⭐ Featured Tools</h2>
 
         {featuredTools.length === 0 ? (
@@ -159,40 +230,7 @@ export default async function Home() {
           ))}
         </div>
 
-        <div
-          style={{
-            marginTop: "70px",
-            background: "var(--card)",
-            padding: "40px",
-            borderRadius: "20px",
-            textAlign: "center",
-            boxShadow: "var(--shadow)",
-            border: "1px solid var(--border)",
-          }}
-        >
-          <h2>📧 Get Weekly AI Tool Updates</h2>
-
-          <p
-            style={{
-              color: "var(--muted)",
-              marginTop: "10px",
-              marginBottom: "20px",
-            }}
-          >
-            Discover new AI tools every week.
-          </p>
-
-          <input
-            type="email"
-            placeholder="Enter your email"
-            style={{
-              maxWidth: "400px",
-              marginRight: "10px",
-            }}
-          />
-
-          <button>Subscribe</button>
-        </div>
+        <Newsletter />
       </div>
     </>
   );

@@ -9,7 +9,7 @@ export default function ContactPage() {
       </p>
 
       <p>
-        Email: your-email@example.com
+        Email: at085202@gmail.com
       </p>
     </div>
   );
