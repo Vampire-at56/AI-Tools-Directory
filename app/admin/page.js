@@ -20,6 +20,7 @@ export default function AdminPage() {
   const [affiliateUrl, setAffiliateUrl] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [featured, setFeatured] = useState(false);
+  const [isNew, setIsNew] = useState(false);
 
   const createSlug = (value) => {
     return value
@@ -64,10 +65,22 @@ export default function AdminPage() {
     e.preventDefault();
 
     const finalSlug = slug || createSlug(name);
+    const cleanName = name.trim();
+
+    const { data: existingTool } = await supabase
+      .from("tools")
+      .select("id")
+      .or(`slug.eq.${finalSlug},name.ilike.${cleanName}`)
+      .maybeSingle();
+
+    if (existingTool) {
+      alert("This tool already exists");
+      return;
+    }
 
     const { error } = await supabase.from("tools").insert([
       {
-        name,
+        name: cleanName,
         slug: finalSlug,
         description,
         category,
@@ -75,11 +88,16 @@ export default function AdminPage() {
         affiliate_url: affiliateUrl,
         logo_url: logoUrl,
         featured,
+        is_new: isNew,
       },
     ]);
 
     if (error) {
-      alert(error.message);
+      if (error.code === "23505") {
+        alert("This tool already exists");
+      } else {
+        alert(error.message);
+      }
       return;
     }
 
@@ -91,6 +109,7 @@ export default function AdminPage() {
     setAffiliateUrl("");
     setLogoUrl("");
     setFeatured(false);
+    setIsNew(false);
 
     fetchDashboardData();
 
@@ -113,9 +132,9 @@ export default function AdminPage() {
     0
   );
 
-  const mostViewedTool = [...tools].sort(
-    (a, b) => (b.views || 0) - (a.views || 0)
-  )[0];
+  const mostViewedTool = [...tools]
+    .filter((tool) => (tool.views || 0) > 0)
+    .sort((a, b) => (b.views || 0) - (a.views || 0))[0];
 
   const mostSavedToolId =
     favorites.length > 0
@@ -133,9 +152,22 @@ export default function AdminPage() {
     (tool) => String(tool.id) === String(mostSavedId)
   );
 
-  const highestRatedTool = [...tools].sort(
-    (a, b) => (b.rating || 0) - (a.rating || 0)
-  )[0];
+  const ratedToolIds = new Set(reviews.map((review) => review.tool_id));
+
+  const highestRatedTool = [...tools]
+    .filter((tool) => ratedToolIds.has(tool.id))
+    .map((tool) => {
+      const toolReviews = reviews.filter((review) => review.tool_id === tool.id);
+      const avgRating =
+        toolReviews.reduce((sum, review) => sum + review.rating, 0) /
+        toolReviews.length;
+
+      return {
+        ...tool,
+        avgRating,
+      };
+    })
+    .sort((a, b) => b.avgRating - a.avgRating)[0];
 
   return (
     <div className="admin-container">
@@ -274,6 +306,19 @@ export default function AdminPage() {
         <br />
         <br />
 
+        <label>
+          <input
+            type="checkbox"
+            checked={isNew}
+            onChange={(e) => setIsNew(e.target.checked)}
+            style={{ width: "auto", marginRight: "8px" }}
+          />
+          New AI Tool
+        </label>
+
+        <br />
+        <br />
+
         <button type="submit">Add Tool</button>
       </form>
 
@@ -290,6 +335,10 @@ export default function AdminPage() {
 
           {tool.affiliate_url && (
             <p style={{ color: "green" }}>Affiliate Link Added ✅</p>
+          )}
+
+          {tool.is_new && (
+            <p style={{ color: "green" }}>New AI Tool ✅</p>
           )}
 
           <a
