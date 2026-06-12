@@ -40,16 +40,64 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className={menuOpen ? "nav-links open" : "nav-links"}>
-          <Link href="/" onClick={closeMenu}>Home</Link>
-          <Link href="/leaderboard" onClick={closeMenu}>Leaderboard</Link>
-          <Link href="/submit-tool" onClick={closeMenu}>Submit Tool</Link>
-          <Link href="/login" onClick={closeMenu}>Login</Link>
-          <Link href="/signup" onClick={closeMenu}>Signup</Link>
-          <Link href="/profile" onClick={closeMenu}>Profile</Link>
+        <div
+          className={
+            menuOpen
+              ? "nav-links open"
+              : "nav-links"
+          }
+        >
+          <Link href="/" onClick={closeMenu}>
+            Home
+          </Link>
+
+          <Link
+            href="/leaderboard"
+            onClick={closeMenu}
+          >
+            Leaderboard
+          </Link>
+
+          <Link
+            href="/blog"
+            onClick={closeMenu}
+          >
+            Blog
+          </Link>
+
+          <Link
+            href="/submit-tool"
+            onClick={closeMenu}
+          >
+            Submit Tool
+          </Link>
+
+          <Link
+            href="/login"
+            onClick={closeMenu}
+          >
+            Login
+          </Link>
+
+          <Link
+            href="/signup"
+            onClick={closeMenu}
+          >
+            Signup
+          </Link>
+
+          <Link
+            href="/profile"
+            onClick={closeMenu}
+          >
+            Profile
+          </Link>
 
           {isAdmin && (
-            <Link href="/admin" onClick={closeMenu}>
+            <Link
+              href="/admin"
+              onClick={closeMenu}
+            >
               Admin
             </Link>
           )}
