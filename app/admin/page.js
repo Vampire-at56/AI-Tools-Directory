@@ -146,6 +146,14 @@ export default function AdminPage() {
           View Tool Submissions ({submissions.length})
         </a>
 
+        <a
+          href="/admin/blogs"
+          className="view-btn"
+          style={{ marginLeft: "10px" }}
+        >
+          📝 Manage Blogs
+        </a>
+
         <button
           style={{ marginLeft: "10px" }}
           onClick={() => {

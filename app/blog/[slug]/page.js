@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { blogs } from "../../../data/blogs";
+import { supabase } from "../../../lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
 
-  const blog = blogs.find((item) => item.slug === slug);
+  const { data: blog } = await supabase
+    .from("blogs")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
 
   if (!blog) {
     return {
@@ -22,9 +29,14 @@ export async function generateMetadata({ params }) {
 export default async function BlogDetailsPage({ params }) {
   const { slug } = await params;
 
-  const blog = blogs.find((item) => item.slug === slug);
+  const { data: blog, error } = await supabase
+    .from("blogs")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .single();
 
-  if (!blog) {
+  if (error || !blog) {
     notFound();
   }
 
@@ -46,6 +58,21 @@ export default async function BlogDetailsPage({ params }) {
           ← Back to Blog
         </Link>
 
+        {blog.image_url && (
+          <img
+            src={blog.image_url}
+            alt={blog.title}
+            style={{
+              width: "100%",
+              maxHeight: "420px",
+              objectFit: "cover",
+              borderRadius: "18px",
+              marginTop: "25px",
+              marginBottom: "25px",
+            }}
+          />
+        )}
+
         <p
           style={{
             color: "#7c3aed",
@@ -53,13 +80,17 @@ export default async function BlogDetailsPage({ params }) {
             marginTop: "25px",
           }}
         >
-          {blog.category}
+          {blog.category || "AI Tools"}
         </p>
 
         <h1>{blog.title}</h1>
 
         <p style={{ color: "var(--muted)" }}>
-          {blog.date} • {blog.readTime}
+          {new Date(blog.created_at).toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
         </p>
 
         <p
@@ -80,9 +111,7 @@ export default async function BlogDetailsPage({ params }) {
         />
 
         {blog.content.split("\n").map((paragraph, index) =>
-          paragraph.trim() ? (
-            <p key={index}>{paragraph}</p>
-          ) : null
+          paragraph.trim() ? <p key={index}>{paragraph}</p> : null
         )}
 
         <div

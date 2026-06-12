@@ -96,4 +96,4 @@ export default async function ToolPage({ params }) {
       <ReviewForm toolId={tool.id} />
     </div>
   );
-}
+} 
