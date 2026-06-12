@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { supabase } from "../lib/supabase";
 import SearchTools from "../components/SearchTools";
 import ToolCard from "../components/ToolCard";
@@ -15,12 +16,20 @@ export default async function Home() {
     .from("reviews")
     .select("*");
 
+  const { data: blogsData } = await supabase
+    .from("blogs")
+    .select("*")
+    .eq("published", true)
+    .order("created_at", { ascending: false })
+    .limit(3);
+
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
   const rawTools = toolsData || [];
   const reviews = reviewsData || [];
+  const latestBlogs = blogsData || [];
 
   const allTools = rawTools.map((tool) => {
     const toolReviews = reviews.filter(
@@ -241,6 +250,73 @@ export default async function Home() {
           <div className="tools-grid">
             {newTools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
+            ))}
+          </div>
+        )}
+
+        <h2 className="section-title">📝 Latest AI Guides</h2>
+
+        {latestBlogs.length === 0 ? (
+          <p>No blog posts yet.</p>
+        ) : (
+          <div className="tools-grid">
+            {latestBlogs.map((blog) => (
+              <div
+                key={blog.id}
+                style={{
+                  background: "var(--card)",
+                  padding: "25px",
+                  borderRadius: "18px",
+                  border: "1px solid var(--border)",
+                  boxShadow: "var(--shadow)",
+                }}
+              >
+                {blog.image_url && (
+                  <img
+                    src={blog.image_url}
+                    alt={blog.title}
+                    style={{
+                      width: "100%",
+                      height: "180px",
+                      objectFit: "cover",
+                      borderRadius: "14px",
+                      marginBottom: "18px",
+                    }}
+                  />
+                )}
+
+                <p
+                  style={{
+                    color: "#7c3aed",
+                    fontWeight: "700",
+                    marginBottom: "10px",
+                  }}
+                >
+                  {blog.category || "AI Guide"}
+                </p>
+
+                <h3>{blog.title}</h3>
+
+                <p
+                  style={{
+                    color: "var(--muted)",
+                    lineHeight: "1.7",
+                  }}
+                >
+                  {blog.description}
+                </p>
+
+                <Link
+                  href={`/blog/${blog.slug}`}
+                  className="view-btn"
+                  style={{
+                    display: "inline-block",
+                    marginTop: "15px",
+                  }}
+                >
+                  Read Guide →
+                </Link>
+              </div>
             ))}
           </div>
         )}

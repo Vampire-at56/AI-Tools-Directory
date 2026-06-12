@@ -235,11 +235,28 @@ select:focus {
   border-color: var(--primary);
 }
 
-/* ===== Cards ===== */
+/* ===== Cards Horizontal Scroll ===== */
 .tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  display: flex;
   gap: 22px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 4px 18px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tools-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.tools-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tools-grid::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
 }
 
 .tool-card {
@@ -251,6 +268,9 @@ select:focus {
   margin-bottom: 15px;
   box-shadow: var(--shadow);
   transition: 0.25s ease;
+  min-width: 280px;
+  max-width: 280px;
+  scroll-snap-align: start;
 }
 
 .tool-card:hover {
@@ -462,7 +482,13 @@ form {
   }
 
   .tools-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .tool-card {
+    min-width: 82%;
+    max-width: 82%;
   }
 
   .search-filter-row {
