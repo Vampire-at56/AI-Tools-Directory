@@ -235,14 +235,23 @@ select:focus {
   border-color: var(--primary);
 }
 
-/* ===== NORMAL GRID: Blog, Search, Other Pages ===== */
+/* ===== NORMAL GRID: Blog, Search, Latest Blogs ===== */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 22px;
 }
 
-/* ===== HOME PAGE SLIDER ONLY ===== */
+.tools-grid {
+  grid-template-columns: 1fr;
+}
+
+.home-slider .tool-card {
+  min-width: 82%;
+  max-width: 82%;
+}
+
+/* ===== HOMEPAGE HORIZONTAL SLIDER ===== */
 .home-slider {
   display: flex;
   gap: 22px;

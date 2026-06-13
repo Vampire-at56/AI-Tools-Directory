@@ -211,11 +211,11 @@ export default async function Home() {
         {featuredTools.length === 0 ? (
           <p>No featured tools yet.</p>
         ) : (
-          <div className="tools-grid">
-            {featuredTools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} />
-            ))}
-          </div>
+          <div className="home-slider">
+           {featuredTools.map((tool) => (
+           <ToolCard key={tool.id} tool={tool} />
+      ))}
+      </div>
         )}
 
         <h2 className="section-title">🏆 Top Rated AI Tools</h2>
@@ -223,11 +223,11 @@ export default async function Home() {
         {topRatedTools.length === 0 ? (
           <p>No rated tools yet.</p>
         ) : (
-          <div className="tools-grid">
+          <div className="home-slider">
             {topRatedTools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
-            ))}
-          </div>
+       ))}
+      </div>
         )}
 
         <h2 className="section-title">🔥 Trending AI Tools</h2>
@@ -235,7 +235,7 @@ export default async function Home() {
         {trendingTools.length === 0 ? (
           <p>No trending tools yet.</p>
         ) : (
-          <div className="tools-grid">
+          <div className="home-slider">
             {trendingTools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
             ))}
@@ -247,7 +247,7 @@ export default async function Home() {
         {newTools.length === 0 ? (
           <p>No new tools selected yet.</p>
         ) : (
-          <div className="tools-grid">
+          <div className="home-slider">
             {newTools.map((tool) => (
               <ToolCard key={tool.id} tool={tool} />
             ))}
